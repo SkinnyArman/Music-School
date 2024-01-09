@@ -37,7 +37,7 @@ const teacherSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
-    branchId: {
+    branchNumber: {
       type: Number,
       required: true,
     },

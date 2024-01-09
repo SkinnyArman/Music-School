@@ -3,11 +3,11 @@ const Teacher = require("../models/teacher");
 const Branch = require("../models/branch");
 const router = new express.Router();
 
-async function updateTeacherCount(branchId, increment = true) {
+async function updateTeacherCount(branchNumber, increment = true) {
   const update = increment
     ? { $inc: { numberOfTeachers: 1 } }
     : { $inc: { numberOfTeachers: -1 } };
-  await Branch.findOneAndUpdate({ branchId: branchId }, update);
+  await Branch.findOneAndUpdate({ branchNumber: branchNumber }, update);
 }
 
 router.get("/teachers", async (req, res) => {
@@ -17,7 +17,7 @@ router.get("/teachers", async (req, res) => {
 
 router.post("/teachers", async (req, res) => {
   const teacher = new Teacher(req.body);
-  const branch = await Branch.findOne({ branchId: req.body.branchId });
+  const branch = await Branch.findOne({ branchNumber: req.body.branchNumber });
   if (!branch) {
     res.status(400).send({
       message: "Branch Id does not exist!",
@@ -26,7 +26,7 @@ router.post("/teachers", async (req, res) => {
 
   try {
     await teacher.save();
-    await updateTeacherCount(teacher.branchId);
+    await updateTeacherCount(teacher.branchNumber);
 
     res.send(200);
   } catch (error) {
@@ -56,7 +56,7 @@ router.patch("/teachers/:id", async (req, res) => {
 router.delete("/teachers/:id", async (req, res) => {
   try {
     const teacher = await Teacher.findByIdAndDelete(req.params.id);
-    await updateTeacherCount(teacher.branchId, false);
+    await updateTeacherCount(teacher.branchNumber, false);
     res.send(teacher);
   } catch (error) {
     res.status(500).send();

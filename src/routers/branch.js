@@ -2,8 +2,8 @@ const express = require("express");
 const Branch = require("../models/branch");
 
 async function getNextBranchNumber() {
-  const lastBranch = await Branch.findOne().sort({ branchId: -1 });
-  return lastBranch ? lastBranch.branchId + 1 : 1;
+  const lastBranch = await Branch.findOne().sort({ branchNumber: -1 });
+  return lastBranch ? lastBranch.branchNumber + 1 : 1;
 }
 
 const router = new express.Router();
@@ -18,7 +18,7 @@ router.post("/branches", async (req, res) => {
     name: req.body.name,
     numberOfStudents: 0,
     numberOfTeachers: 0,
-    branchId: await getNextBranchNumber()
+    branchNumber: await getNextBranchNumber()
   });
 
   try {

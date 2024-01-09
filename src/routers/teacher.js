@@ -1,6 +1,14 @@
 const express = require("express");
 const Teacher = require("../models/teacher");
+const Branch = require("../models/branch");
 const router = new express.Router();
+
+async function updateTeacherCount(branchId, increment = true) {
+  const update = increment
+    ? { $inc: { numberOfTeachers: 1 } }
+    : { $inc: { numberOfTeachers: -1 } };
+  await Branch.findOneAndUpdate({ branchId: branchId }, update);
+}
 
 router.get("/teachers", async (req, res) => {
   const teachers = await Teacher.find();
@@ -9,12 +17,19 @@ router.get("/teachers", async (req, res) => {
 
 router.post("/teachers", async (req, res) => {
   const teacher = new Teacher(req.body);
+  const branch = await Branch.findOne({ branchId: req.body.branchId });
+  if (!branch) {
+    res.status(400).send({
+      message: "Branch Id does not exist!",
+    });
+  }
 
   try {
     await teacher.save();
+    await updateTeacherCount(teacher.branchId);
+
     res.send(200);
   } catch (error) {
-    console.log(error);
     res.status(400).send(error);
   }
 });
@@ -41,6 +56,7 @@ router.patch("/teachers/:id", async (req, res) => {
 router.delete("/teachers/:id", async (req, res) => {
   try {
     const teacher = await Teacher.findByIdAndDelete(req.params.id);
+    await updateTeacherCount(teacher.branchId, false);
     res.send(teacher);
   } catch (error) {
     res.status(500).send();

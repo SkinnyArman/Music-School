@@ -1,8 +1,13 @@
 const express = require("express");
-const Teacher = require("../models/teacher")
+const Teacher = require("../models/teacher");
 const router = new express.Router();
 
-router.post("/users", async (req, res) => {
+router.get("/teachers", async (req, res) => {
+  const teachers = await Teacher.find();
+  res.send(teachers);
+});
+
+router.post("/teachers", async (req, res) => {
   const teacher = new Teacher(req.body);
 
   try {
@@ -14,85 +19,32 @@ router.post("/users", async (req, res) => {
   }
 });
 
-// router.post("/users/login", async (req, res) => {
-//   try {
-//     const user = await User.findByCredentials(
-//       req.body.email,
-//       req.body.password
-//     );
-//     const token = await user.generateAuthToken();
+router.patch("/teachers/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  try {
+    const teacher = await Teacher.findById(req.params.id);
 
-//     res.send({ user, token });
-//   } catch (error) {
-//     res.status(400).send();
-//   }
-// });
+    updates.forEach((update) => (teacher[update] = req.body[update]));
 
-// router.post("/users/logout", auth, async (req, res) => {
-//   console.log(req);
-//   try {
-//     req.user.tokens = req.user.tokens.filter((token) => {
-//       return token.token !== req.token;
-//     });
-//     await req.user.save();
-//     res.status(200).send(req.user);
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
+    await teacher.save();
 
-// router.post("/users/logoutAll", auth, async (req, res) => {
-//   try {
-//     req.user.tokens = [];
-//     await req.user.save();
-//     res.send();
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
+    if (!teacher) {
+      return res.status(404).send();
+    }
 
-// router.get("/users/me", auth, async (req, res) => {
-//   res.send(req.user);
-// });
+    res.send(teacher);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
-// router.patch("/users/me", auth, async (req, res) => {
-//   const updates = Object.keys(req.body);
-//   try {
-//     const user = req.user;
-
-//     updates.forEach((update) => (user[update] = req.body[update]));
-
-//     await user.save();
-
-//     if (!user) {
-//       return res.status(404).send();
-//     }
-
-//     res.send(user);
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
-
-// router.delete("/users/me", async (req, res) => {
-//   try {
-//     await req.user.remove();
-//     res.send(req.user);
-//   } catch (error) {
-//     res.status(500).send();
-//   }
-// });
-
-// router.get("/users/:id", async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.id);
-//     if (!user) {
-//       return res.status(404).send("User not found!");
-//     }
-//     res.send(user);
-//   } catch (error) {
-//     res.status(500).send("Server error!");
-//   }
-// });
+router.delete("/teachers/:id", async (req, res) => {
+  try {
+    const teacher = await Teacher.findByIdAndDelete(req.params.id);
+    res.send(teacher);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
 
 module.exports = router;

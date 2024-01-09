@@ -10,6 +10,7 @@ const teacherSchema = new mongoose.Schema(
     },
     surname: {
       type: String,
+      trim: true,
       required: true,
     },
     birthdate: {
@@ -22,6 +23,7 @@ const teacherSchema = new mongoose.Schema(
     },
     major: {
       type: String,
+      trim: true,
       required: true,
     },
     numberOfActiveYears: {
@@ -36,8 +38,8 @@ const teacherSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
-    teachingBranch: {
-      type: Schema.Types.ObjectId,
+    branch: {
+      type: Number,
       required: true
     },
   },

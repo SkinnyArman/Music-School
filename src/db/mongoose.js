@@ -1,8 +1,13 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
-mongoose.connect(
-  "mongodb+srv://armanwithamini:V7XFmU74e2mxV0pm@cluster0.b7hli6h.mongodb.net/task",
-  {
-    useNewUrlParser: true,
-  }
-);
+// try {
+//   mongoose.connect(
+//     "mongodb+srv://arman:0JAbDhvWpn3yKmYl@cluster0.vc022us.mongodb.net/?retryWrites=true&w=majority",
+//     {
+//       useNewUrlParser: true,
+//     }
+//   );
+// } catch (error) {
+//   console.log("fucker");
+//   console.log(error);
+// }

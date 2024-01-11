@@ -12,9 +12,24 @@ const studentSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    email: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    sex: {
+      type: String,
+      trim: true,
+      enum: ["M", "F"],
+    },
+    imageURL: {
+      type: String,
+      trim: true,
+      required: false,
+    },
     enrolledClassCount: {
       type: Number,
-      required: true
+      required: true,
     },
     birthdate: {
       type: Date,

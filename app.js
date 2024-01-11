@@ -1,4 +1,6 @@
 const express = require("express");
+var cors = require('cors')
+
 // require("./src/db/mongoose");
 const mongoose = require("mongoose");
 const teacherRouter = require("./src/routers/teacher");
@@ -25,12 +27,15 @@ db.once("open", function () {
 const app = express();
 app.use(express.json());
 
+app.use(cors())
+
+
 app.use(teacherRouter);
 app.use(branchRouter)
 app.use(studentRouter)
 app.use(categoryRouter)
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3030;
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

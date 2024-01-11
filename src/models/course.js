@@ -20,6 +20,10 @@ const courseSchema = new mongoose.Schema({
     required: true,
     enum: ["Beginner", "Intermediate", "Advanced"],
   },
+  tuition: {
+    type: Number,
+    required: true
+  },
   startDate: {
     type: Date,
     required: true,

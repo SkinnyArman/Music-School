@@ -9,7 +9,7 @@ router.get("/students", async (req, res) => {
 });
 
 router.post("/students", async (req, res) => {
-  const student = new Student({ ...req.body, numberOfEnrolledClasses: 0 });
+  const student = new Student({ ...req.body, enrolledClassCount: 0 });
 
   try {
     await student.save();

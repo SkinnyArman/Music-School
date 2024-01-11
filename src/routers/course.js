@@ -67,6 +67,13 @@ router.post("/courses/:courseId/enroll", async (req, res) => {
     for (let studentId of studentIds) {
       if (course.students.includes(studentId)) {
         alreadyEnrolled.push(studentId);
+
+        // Increment enrolledClassCount for each student
+        updates.push(
+          Student.findByIdAndUpdate(studentId, {
+            $inc: { enrolledClassCount: 1 },
+          })
+        );
       } else {
         course.students.push(studentId);
         enrolled.push(studentId);

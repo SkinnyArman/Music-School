@@ -12,6 +12,10 @@ const studentSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    enrolledClassCount: {
+      type: Number,
+      required: true
+    },
     birthdate: {
       type: Date,
       required: true,

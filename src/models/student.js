@@ -16,10 +16,6 @@ const studentSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    hasEnrolledBefore: {
-      type: Boolean,
-      required: true,
-    },
     birthplace: {
       type: String,
       required: true,

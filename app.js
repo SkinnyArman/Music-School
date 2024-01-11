@@ -2,6 +2,7 @@ const express = require("express");
 // require("./src/db/mongoose");
 const mongoose = require("mongoose");
 const teacherRouter = require("./src/routers/teacher");
+const studentRouter = require("./src/routers/student");
 const branchRouter = require("./src/routers/branch");
 
 mongoose.connect(
@@ -25,6 +26,7 @@ app.use(express.json());
 
 app.use(teacherRouter);
 app.use(branchRouter)
+app.use(studentRouter)
 
 const port = process.env.PORT || 3000;
 

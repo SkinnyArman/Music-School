@@ -11,7 +11,7 @@ async function updateTeacherCount(branchNumber, increment = true) {
 }
 
 router.get("/teachers", async (req, res) => {
-  const teachers = await Teacher.find();
+  const teachers = await Teacher.find().populate('branch', 'name branchNumber');
   res.send(teachers);
 });
 
@@ -25,6 +25,11 @@ router.post("/teachers", async (req, res) => {
   }
 
   try {
+    const teacher = new Teacher({
+      ...req.body,
+      branch: branch._id,
+    });
+
     await teacher.save();
     await updateTeacherCount(teacher.branchNumber);
 

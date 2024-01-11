@@ -37,9 +37,9 @@ const teacherSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
-    branchNumber: {
-      type: Number,
-      required: true,
+    branch: {
+      type: mongoose.Schema.Types.ObjectId, // Reference to the Branch model
+      ref: "Branch",
     },
   },
   { timestamps: true }

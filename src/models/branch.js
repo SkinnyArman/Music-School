@@ -11,7 +11,7 @@ const branchSchema = new mongoose.Schema(
       type: Number,
       required: true,
       unique: true,
-    },
+    },  
     numberOfStudents: {
       type: Number,
       required: true,

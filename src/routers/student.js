@@ -5,15 +5,25 @@ const Branch = require("../models/branch");
 const router = new express.Router();
 
 router.get("/students", async (req, res) => {
-  try {
-    const students = await Student.find().populate(
-      "branch",
-      "branchNumber name"
-    );
+  const page = parseInt(req.query.page) || 1; // Default to first page
+  const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
+  const skip = (page - 1) * pageSize;
 
-    res.send(students);
+  try {
+    const students = await Student.find()
+      .populate("branch", "branchNumber name")
+      .limit(pageSize)
+      .skip(skip);
+
+    const totalStudents = await Student.countDocuments(); // Total number of students
+
+    res.send({
+      students,
+      totalPages: Math.ceil(totalStudents / pageSize),
+      currentPage: page,
+    });
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 });
 

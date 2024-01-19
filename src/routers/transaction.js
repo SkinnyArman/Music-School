@@ -7,8 +7,7 @@ const router = express.Router();
 router.post("/transactions", async (req, res) => {
   try {
     const { studentId, amount } = req.body;
-    const student = Student.findById(studentId);
-    console.log(student);
+    const student = await Student.findById(studentId);
 
     const transaction = new Transaction({
       student: studentId,

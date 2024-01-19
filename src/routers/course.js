@@ -63,6 +63,8 @@ router.get("/courses", async (req, res) => {
   try {
     const courses = await Course.find()
       .populate("students")
+      .populate("teacher")
+      .populate("topic")
       .limit(pageSize)
       .skip(skip);
 

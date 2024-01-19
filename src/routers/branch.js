@@ -1,7 +1,7 @@
 const express = require("express");
 const Branch = require("../models/branch");
-const Student = require("../models/student")
-const Teacher = require("../models/teacher")
+const Student = require("../models/student");
+const Teacher = require("../models/teacher");
 
 async function getNextBranchNumber() {
   const lastBranch = await Branch.findOne().sort({ branchNumber: -1 });
@@ -20,8 +20,32 @@ async function removeAssociatedData(branchId) {
 const router = new express.Router();
 
 router.get("/branches", async (req, res) => {
-  const branches = await Branch.find();
-  res.send(branches);
+  try {
+    const branches = await Branch.aggregate([
+      {
+        $lookup: {
+          from: "transactions",
+          localField: "_id",
+          foreignField: "branch",
+          as: "transactions",
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          numberOfStudents: 1,
+          numberOfTeachers: 1,
+          branchNumber: 1,
+          totalPayments: { $sum: "$transactions.amount" },
+        },
+      },
+    ]);
+
+    res.send(branches);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
 });
 
 router.post("/branches", async (req, res) => {

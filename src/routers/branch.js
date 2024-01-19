@@ -14,7 +14,7 @@ async function removeAssociatedData(branchId) {
   await Teacher.deleteMany({ branch: branchId });
 
   // Remove courses associated with the branch
-  await Course.deleteMany({ branch: branchId });
+  // await Course.deleteMany({ branch: branchId });
 }
 
 const router = new express.Router();

@@ -115,10 +115,11 @@ router.delete("/courses/:courseId", async (req, res) => {
     );
 
     // Delete the course
-    await course.remove();
+    await Course.findByIdAndDelete(req.params.courseId);
 
     res.send(course);
   } catch (error) {
+    console.log(error)
     res.status(500).send(error);
   }
 });

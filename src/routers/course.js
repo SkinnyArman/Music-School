@@ -97,10 +97,27 @@ router.get("/courses/:courseId", async (req, res) => {
 
 router.delete("/courses/:courseId", async (req, res) => {
   try {
-    const course = await Course.findByIdAndDelete(req.params.courseId);
+    // Find the course with the list of students
+    const course = await Course.findById(req.params.courseId).populate(
+      "students"
+    );
     if (!course) {
       return res.status(404).send();
     }
+
+    // Update each student's enrolledClassCount
+    await Promise.all(
+      course.students.map(async (student) => {
+        await Student.updateOne(
+          { _id: student._id },
+          { $inc: { enrolledClassCount: -1 } }
+        );
+      })
+    );
+
+    // Delete the course
+    await course.remove();
+
     res.send(course);
   } catch (error) {
     res.status(500).send(error);

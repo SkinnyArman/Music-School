@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const transactionSchema = new mongoose.Schema(
   {
     student: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Student",
+      type: Object,
+      required: true
     },
     branch: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Branch",
+      type: Object,
+      required: true
     },
     amount: {
       type: Number,

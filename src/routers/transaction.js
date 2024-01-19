@@ -8,10 +8,11 @@ router.post("/transactions", async (req, res) => {
   try {
     const { studentId, amount } = req.body;
     const student = await Student.findById(studentId);
+    const branch = await Branch.findById(student.branch);
 
     const transaction = new Transaction({
-      student: studentId,
-      branch: student.branch,
+      student,
+      branch,
       amount,
     });
 
@@ -33,7 +34,6 @@ router.get("/transactions", async (req, res) => {
   try {
     const transactions = await Transaction.find()
       .populate("branch")
-      .populate("student")
       .limit(pageSize)
       .skip(skip);
 

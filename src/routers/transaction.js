@@ -16,6 +16,8 @@ router.post("/transactions", async (req, res) => {
     });
 
     await transaction.save();
+    await Student.findByIdAndUpdate(studentId, { $inc: { credit: amount } });
+
     res.status(201).json(transaction);
   } catch (error) {
     console.error(error);

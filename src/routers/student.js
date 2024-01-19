@@ -41,6 +41,7 @@ router.post("/students", async (req, res) => {
     const student = new Student({
       ...req.body,
       enrolledClassCount: 0,
+      credit: 0,
       branch: branch._id,
     });
     await student.save();

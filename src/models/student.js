@@ -43,6 +43,10 @@ const studentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId, // Reference to the Branch model
       ref: "Branch",
     },
+    credit: {
+      type: Number,
+      required: true
+    }
   },
   { timestamps: true }
 );

@@ -22,17 +22,15 @@ router.post("/new-course", async (req, res) => {
 
     const studentIds = req.body.students; // Array of student IDs
     if (studentIds && studentIds.length > 0) {
-      let enrolled = [];
       let updates = []; // Initialize an array for asynchronous update operations
 
       for (let studentId of studentIds) {
         savedCourse.students.push(studentId);
-        enrolled.push(studentId);
 
-        // Prepare to increment enrolledClassCount for each student
+        // Prepare to increment enrolledClassCount and decrement credit for each student
         updates.push(
           Student.findByIdAndUpdate(studentId, {
-            $inc: { enrolledClassCount: 1 },
+            $inc: { enrolledClassCount: 1, credit: -savedCourse.tuition },
           })
         );
       }
@@ -46,7 +44,7 @@ router.post("/new-course", async (req, res) => {
 
     // Send the response
     res.send({
-      message: "Course created and enrollment updated",
+      message: "Course created and student enrollments and credits updated",
       course: savedCourse,
     });
   } catch (error) {

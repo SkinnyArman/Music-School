@@ -1,14 +1,14 @@
 const express = require("express");
 const Transaction = require("../models/transaction");
-const Student = require("../models/student")
+const Student = require("../models/student");
 const router = express.Router();
 
 // POST route to create a new transaction with branchId, studentId, and amount
 router.post("/transactions", async (req, res) => {
   try {
     const { studentId, amount } = req.body;
-    const student = Student.findById(studentId)
-    console.log(student)
+    const student = Student.findById(studentId);
+    console.log(student);
 
     const transaction = new Transaction({
       payer: studentId,
@@ -26,7 +26,7 @@ router.post("/transactions", async (req, res) => {
   }
 });
 
-router.get("/teachers", async (req, res) => {
+router.get("/transactions", async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Default to first page
   const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
   const skip = (page - 1) * pageSize;

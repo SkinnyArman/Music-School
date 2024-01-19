@@ -41,14 +41,17 @@ router.get("/students", async (req, res) => {
 
 router.post("/students", async (req, res) => {
   try {
-    const branch = await Branch.findOne({
-      branchNumber: req.body.branchNumber,
-    });
+    const branch = await Branch.findById(req.body.branch);
     if (!branch) {
       return res.status(400).send({
         message: "Branch Id does not exist!",
       });
     }
+    await Branch.findByIdAndUpdate(req.body.branch, {
+      $inc: {
+        numberOfStudents: 1,
+      },
+    });
 
     const student = new Student({
       ...req.body,
@@ -67,6 +70,13 @@ router.post("/students", async (req, res) => {
 router.delete("/students/:id", async (req, res) => {
   try {
     const student = await Student.findByIdAndDelete(req.params.id);
+    const branch = await Branch.findById(student.branch);
+
+    await Branch.findByIdAndUpdate(req.body.branch, {
+      $inc: {
+        numberOfStudents: -1,
+      },
+    });
 
     if (!student) {
       return res.status(404).send({

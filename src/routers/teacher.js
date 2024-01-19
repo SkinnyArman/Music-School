@@ -35,7 +35,7 @@ router.get("/teachers", async (req, res) => {
 
 router.post("/teachers", async (req, res) => {
   const teacher = new Teacher(req.body);
-  const branch = await Branch.findOne({ branchNumber: req.body.branchNumber });
+  const branch = await Branch.findById(req.body.branch);
   if (!branch) {
     res.status(400).send({
       message: "Branch Id does not exist!",

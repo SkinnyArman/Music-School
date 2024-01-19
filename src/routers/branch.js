@@ -14,11 +14,12 @@ router.get("/branches", async (req, res) => {
 });
 
 router.post("/branches", async (req, res) => {
+  const newBranchNumber = await getNextBranchNumber();
   const branch = new Branch({
     name: req.body.name,
     numberOfStudents: 0,
     numberOfTeachers: 0,
-    branchNumber: await getNextBranchNumber()
+    branchNumber: newBranchNumber,
   });
 
   try {

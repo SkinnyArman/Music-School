@@ -11,7 +11,7 @@ router.post("/transactions", async (req, res) => {
     console.log(student);
 
     const transaction = new Transaction({
-      payer: studentId,
+      student: studentId,
       branch: student.branch,
       amount,
     });

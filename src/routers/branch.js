@@ -1,5 +1,7 @@
 const express = require("express");
 const Branch = require("../models/branch");
+const Student = require("../models/student")
+const Teacher = require("../models/teacher")
 
 async function getNextBranchNumber() {
   const lastBranch = await Branch.findOne().sort({ branchNumber: -1 });
@@ -7,14 +9,12 @@ async function getNextBranchNumber() {
 }
 
 async function removeAssociatedData(branchId) {
-  // Remove students associated with the branch
-  await Student.deleteMany({ branch: branchId });
-
-  // Remove teachers associated with the branch
-  await Teacher.deleteMany({ branch: branchId });
-
-  // Remove courses associated with the branch
-  // await Course.deleteMany({ branch: branchId });
+  try {
+    await Student.deleteMany({ branch: branchId });
+    await Teacher.deleteMany({ branch: branchId });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const router = new express.Router();
@@ -50,7 +50,7 @@ router.delete("/branches/:id", async (req, res) => {
     await removeAssociatedData(branchId);
 
     // Then, remove the branch itself
-    await Branch.findByIdAndRemove(branchId);
+    await Branch.findByIdAndDelete(branchId);
 
     res.status(200).send("Branch and associated data removed.");
   } catch (error) {

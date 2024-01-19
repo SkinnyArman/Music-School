@@ -65,6 +65,7 @@ router.get("/courses", async (req, res) => {
       .populate("students")
       .populate("teacher")
       .populate("topic")
+      .populate("branch")
       .limit(pageSize)
       .skip(skip);
 

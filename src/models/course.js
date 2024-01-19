@@ -22,7 +22,7 @@ const courseSchema = new mongoose.Schema({
   },
   tuition: {
     type: Number,
-    required: true
+    required: true,
   },
   startDate: {
     type: Date,
@@ -31,6 +31,10 @@ const courseSchema = new mongoose.Schema({
   endDate: {
     type: Date,
     required: true,
+  },
+  branch: {
+    type: mongoose.Schema.Types.ObjectId, // Reference to the Branch model
+    ref: "Branch",
   },
 });
 

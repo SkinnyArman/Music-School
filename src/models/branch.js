@@ -20,6 +20,10 @@ const branchSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    numberOfCourses: {
+      type: Number,
+      required: true,
+    }
   },
   { timestamps: true }
 );

@@ -54,6 +54,7 @@ router.post("/branches", async (req, res) => {
     name: req.body.name,
     numberOfStudents: 0,
     numberOfTeachers: 0,
+    numberOfCourses: 0,
     branchNumber: newBranchNumber,
   });
 

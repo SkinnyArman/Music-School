@@ -1,6 +1,7 @@
 const express = require("express");
 const Course = require("../models/course");
 const Student = require("../models/student");
+const Branch = require("../models/branch");
 const router = new express.Router();
 
 // router.post("/courses", async (req, res) => {
@@ -15,6 +16,11 @@ const router = new express.Router();
 router.post("/new-course", async (req, res) => {
   // Create a new course instance
   const course = new Course(req.body);
+  await Branch.findByIdAndUpdate(req.body.branch, {
+    $inc: {
+      numberOfCourses: 1,
+    },
+  });
 
   try {
     // Save the new course
@@ -119,7 +125,7 @@ router.delete("/courses/:courseId", async (req, res) => {
 
     res.send(course);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send(error);
   }
 });

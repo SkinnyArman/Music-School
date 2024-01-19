@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const transactionSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      trim: true,
-      required: true,
-    },
     payer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",

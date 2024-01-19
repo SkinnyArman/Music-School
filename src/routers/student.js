@@ -6,16 +6,28 @@ const router = new express.Router();
 
 router.get("/students", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const pageSize = parseInt(req.query.pageSize) || 10; 
+  const pageSize = parseInt(req.query.pageSize) || 10;
   const skip = (page - 1) * pageSize;
 
+  // Extract the 'surname' query parameter
+  const surnameQuery = req.query.surname;
+
   try {
-    const students = await Student.find()
+    // Create a query object to filter students
+    const query = Student.find();
+
+    // If a 'surname' query parameter is provided, add it to the query
+    if (surnameQuery) {
+      query.where({ surname: new RegExp(surnameQuery, "i") }); // Case-insensitive search
+    }
+
+    // Continue with the rest of the query
+    const students = await query
       .populate("branch", "branchNumber name")
       .limit(pageSize)
       .skip(skip);
 
-    const totalStudents = await Student.countDocuments(); 
+    const totalStudents = await Student.countDocuments(query); // Consider the query for total count
 
     res.send({
       students,

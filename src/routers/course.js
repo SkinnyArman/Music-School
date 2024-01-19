@@ -56,11 +56,23 @@ router.post("/new-course", async (req, res) => {
 });
 
 router.get("/courses", async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Default to first page
+  const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
+  const skip = (page - 1) * pageSize;
+
   try {
     const courses = await Course.find()
-      .populate("subcategory")
-      .populate("students");
-    res.send(courses);
+      .populate("students")
+      .limit(pageSize)
+      .skip(skip);
+
+    const totalCourses = await Course.countDocuments(); // Total number of courses
+
+    res.send({
+      courses,
+      totalPages: Math.ceil(totalCourses / pageSize),
+      currentPage: page,
+    });
   } catch (error) {
     res.status(500).send(error);
   }

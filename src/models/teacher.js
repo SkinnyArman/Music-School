@@ -33,10 +33,6 @@ const teacherSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    expertiseAreas: {
-      type: Array,
-      required: true,
-    },
     branch: {
       type: mongoose.Schema.Types.ObjectId, // Reference to the Branch model
       ref: "Branch",

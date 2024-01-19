@@ -7,6 +7,7 @@ const teacherRouter = require("./src/routers/teacher");
 const studentRouter = require("./src/routers/student");
 const branchRouter = require("./src/routers/branch");
 const categoryRouter = require("./src/routers/category");
+const courseRouter = require("./src/routers/course")
 
 mongoose.connect(
   "mongodb+srv://arman:0JAbDhvWpn3yKmYl@cluster0.vc022us.mongodb.net",
@@ -34,6 +35,7 @@ app.use(teacherRouter);
 app.use(branchRouter)
 app.use(studentRouter)
 app.use(categoryRouter)
+app.use(courseRouter)
 
 const port = process.env.PORT || 3030;
 

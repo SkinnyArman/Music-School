@@ -11,8 +11,26 @@ async function updateTeacherCount(branchNumber, increment = true) {
 }
 
 router.get("/teachers", async (req, res) => {
-  const teachers = await Teacher.find().populate('branch', 'name branchNumber');
-  res.send(teachers);
+  const page = parseInt(req.query.page) || 1; // Default to first page
+  const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
+  const skip = (page - 1) * pageSize;
+
+  try {
+    const teachers = await Teacher.find()
+      .populate("branch", "name branchNumber")
+      .limit(pageSize)
+      .skip(skip);
+
+    const totalTeachers = await Teacher.countDocuments(); // Total number of teachers
+
+    res.send({
+      teachers,
+      totalPages: Math.ceil(totalTeachers / pageSize),
+      currentPage: page,
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 router.post("/teachers", async (req, res) => {

@@ -5,8 +5,8 @@ const Branch = require("../models/branch");
 const router = new express.Router();
 
 router.get("/students", async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // Default to first page
-  const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize) || 10; 
   const skip = (page - 1) * pageSize;
 
   try {
@@ -15,7 +15,7 @@ router.get("/students", async (req, res) => {
       .limit(pageSize)
       .skip(skip);
 
-    const totalStudents = await Student.countDocuments(); // Total number of students
+    const totalStudents = await Student.countDocuments(); 
 
     res.send({
       students,

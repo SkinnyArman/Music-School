@@ -7,11 +7,13 @@ const router = express.Router();
 // POST route to create a new transaction with branchId, studentId, and amount
 router.post("/transactions", async (req, res) => {
   try {
-    const { branchId, studentId, amount } = req.body;
+    const { studentId, amount } = req.body;
+    const student = Student.findById(studentId)
+    console.log(student)
 
     const transaction = new Transaction({
       payer: studentId,
-      branch: branchId,
+      branch: student.branch,
       amount,
     });
 

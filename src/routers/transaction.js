@@ -34,7 +34,7 @@ router.get("/teachers", async (req, res) => {
   try {
     const transactions = await Transaction.find()
       .populate("branch")
-      .populate("payer", "student")
+      .populate("student")
       .limit(pageSize)
       .skip(skip);
 

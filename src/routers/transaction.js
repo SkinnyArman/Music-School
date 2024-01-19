@@ -1,6 +1,6 @@
 const express = require("express");
 const Transaction = require("../models/transaction");
-
+const Student = require("../models/student")
 const router = express.Router();
 
 // POST route to create a new transaction with branchId, studentId, and amount

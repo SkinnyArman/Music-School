@@ -8,6 +8,7 @@ const studentRouter = require("./src/routers/student");
 const branchRouter = require("./src/routers/branch");
 const categoryRouter = require("./src/routers/category");
 const courseRouter = require("./src/routers/course")
+const transactionRouter = require("./src/routers/transaction")
 
 mongoose.connect(
   "mongodb+srv://arman:0JAbDhvWpn3yKmYl@cluster0.vc022us.mongodb.net",

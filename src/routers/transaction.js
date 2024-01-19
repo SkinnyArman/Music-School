@@ -1,6 +1,7 @@
 const express = require("express");
 const Transaction = require("../models/transaction");
 const Student = require("../models/student");
+const Branch = require("../models/branch");
 const router = express.Router();
 
 // POST route to create a new transaction with branchId, studentId, and amount
@@ -11,8 +12,12 @@ router.post("/transactions", async (req, res) => {
     const branch = await Branch.findById(student.branch);
 
     const transaction = new Transaction({
-      student,
-      branch,
+      student: {
+        _id: student._id,
+        name: student.name,
+        surname: student.surname,
+      },
+      branch: { _id: branch._id, name: branch.name },
       amount,
     });
 

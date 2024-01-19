@@ -35,6 +35,7 @@ router.get("/branches", async (req, res) => {
           name: 1,
           numberOfStudents: 1,
           numberOfTeachers: 1,
+          numberOfCourses: 1,
           branchNumber: 1,
           totalPayments: { $sum: "$transactions.amount" },
         },

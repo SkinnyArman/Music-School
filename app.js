@@ -37,6 +37,7 @@ app.use(branchRouter)
 app.use(studentRouter)
 app.use(categoryRouter)
 app.use(courseRouter)
+app.use(transactionRouter)
 
 const port = process.env.PORT || 3030;
 

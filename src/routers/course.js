@@ -14,25 +14,29 @@ const router = new express.Router();
 //   }
 // });
 router.post("/new-course", async (req, res) => {
-  // Create a new course instance
-  const course = new Course(req.body);
-  await Branch.findByIdAndUpdate(req.body.branch, {
-    $inc: {
-      numberOfCourses: 1,
-    },
-  });
-
   try {
+    // Ensure no duplicate student IDs
+    const uniqueStudentIds = [...new Set(req.body.students)];
+
+    // Create a new course instance
+    const course = new Course({
+      ...req.body,
+      students: uniqueStudentIds,
+    });
+
+    await Branch.findByIdAndUpdate(req.body.branch, {
+      $inc: {
+        numberOfCourses: 1,
+      },
+    });
+
     // Save the new course
     const savedCourse = await course.save();
 
-    const studentIds = req.body.students; // Array of student IDs
-    if (studentIds && studentIds.length > 0) {
+    if (uniqueStudentIds.length > 0) {
       let updates = []; // Initialize an array for asynchronous update operations
 
-      for (let studentId of studentIds) {
-        savedCourse.students.push(studentId);
-
+      for (let studentId of uniqueStudentIds) {
         // Prepare to increment enrolledClassCount and decrement credit for each student
         updates.push(
           Student.findByIdAndUpdate(studentId, {
@@ -43,9 +47,6 @@ router.post("/new-course", async (req, res) => {
 
       // Perform all update operations
       await Promise.all(updates);
-
-      // Save updates to the course
-      await savedCourse.save();
     }
 
     // Send the response

@@ -9,8 +9,9 @@ router.get("/students", async (req, res) => {
   const pageSize = parseInt(req.query.pageSize) || 10;
   const skip = (page - 1) * pageSize;
 
-  // Extract the 'surname' query parameter
+  // Extract the 'surname' and 'branchId' query parameters
   const surnameQuery = req.query.surname;
+  const branchIdQuery = req.query.branchId;
 
   try {
     // Create a query object to filter students
@@ -19,6 +20,11 @@ router.get("/students", async (req, res) => {
     // If a 'surname' query parameter is provided, add it to the query
     if (surnameQuery) {
       query.where({ surname: new RegExp(surnameQuery, "i") }); // Case-insensitive search
+    }
+
+    // If a 'branchId' query parameter is provided, add it to the query
+    if (branchIdQuery) {
+      query.where({ branch: branchIdQuery }); // Filter by branch ID
     }
 
     // Continue with the rest of the query

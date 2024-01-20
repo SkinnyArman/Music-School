@@ -74,26 +74,37 @@ router.post("/students", async (req, res) => {
 });
 
 router.delete("/students/:id", async (req, res) => {
+  const studentId = req.params.id;
   try {
-    const student = await Student.findByIdAndDelete(req.params.id);
-    const branch = await Branch.findById(student.branch);
-
-    await Branch.findByIdAndUpdate(req.body.branch, {
-      $inc: {
-        numberOfStudents: -1,
-      },
-    });
-
+    const student = await Student.findById(studentId);
     if (!student) {
       return res.status(404).send({
         message: "Student not found!",
       });
     }
 
+    // Remove the student from the Branch
+    await Branch.findByIdAndUpdate(student.branch, {
+      $inc: {
+        numberOfStudents: -1,
+      },
+    });
+
+    // Remove the student from any courses they are enrolled in
+    await Course.updateMany(
+      { students: studentId },
+      { $pull: { students: studentId } }
+    );
+
+    // Delete the student
+    await Student.findByIdAndDelete(studentId);
+
     res.send({ message: "Student deleted successfully." });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
+
 
 module.exports = router;

@@ -2,6 +2,7 @@ const express = require("express");
 const Branch = require("../models/branch");
 const Student = require("../models/student");
 const Teacher = require("../models/teacher");
+const Course = require("../models/course");
 
 async function getNextBranchNumber() {
   const lastBranch = await Branch.findOne().sort({ branchNumber: -1 });
@@ -12,7 +13,7 @@ async function removeAssociatedData(branchId) {
   try {
     await Student.deleteMany({ branch: branchId });
     await Teacher.deleteMany({ branch: branchId });
-    await Branch.deleteMany({ branch: branchId });
+    await Course.deleteMany({ branch: branchId });
   } catch (error) {
     console.log(error);
   }

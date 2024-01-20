@@ -8,6 +8,8 @@ const router = express.Router();
 router.post("/transactions", async (req, res) => {
   try {
     const { studentId, amount } = req.body;
+    const validatedAmount = +amount
+
     const student = await Student.findById(studentId);
     const branch = await Branch.findById(student.branch);
 
@@ -18,11 +20,14 @@ router.post("/transactions", async (req, res) => {
         surname: student.surname,
       },
       branch: { _id: branch._id, name: branch.name },
-      amount,
+      amount: validatedAmount,
     });
 
     await transaction.save();
-    await Student.findByIdAndUpdate(studentId, { $inc: { credit: amount } });
+    await Student.findByIdAndUpdate(studentId, { $inc: { credit: validatedAmount } });
+    await Branch.findByIdAndUpdate(branch._id, {
+      $inc: { totalPayments: amount },
+    });
 
     res.status(201).json(transaction);
   } catch (error) {

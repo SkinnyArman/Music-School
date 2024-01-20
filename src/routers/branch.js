@@ -21,27 +21,7 @@ const router = new express.Router();
 
 router.get("/branches", async (req, res) => {
   try {
-    const branches = await Branch.aggregate([
-      {
-        $lookup: {
-          from: "transactions",
-          localField: "_id",
-          foreignField: "branch",
-          as: "transactions",
-        },
-      },
-      {
-        $project: {
-          name: 1,
-          numberOfStudents: 1,
-          numberOfTeachers: 1,
-          numberOfCourses: 1,
-          branchNumber: 1,
-          totalPayments: { $sum: "$transactions.amount" },
-        },
-      },
-    ]);
-
+    const branches = await Branch.find();
     res.send(branches);
   } catch (error) {
     console.log(error);
@@ -56,6 +36,7 @@ router.post("/branches", async (req, res) => {
     numberOfStudents: 0,
     numberOfTeachers: 0,
     numberOfCourses: 0,
+    totalPayments: 0,
     branchNumber: newBranchNumber,
   });
 

@@ -23,6 +23,10 @@ const branchSchema = new mongoose.Schema(
     numberOfCourses: {
       type: Number,
       required: true,
+    },
+    totalPayments: {
+      type: Number,
+      required: true
     }
   },
   { timestamps: true }

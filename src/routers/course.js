@@ -119,7 +119,11 @@ router.delete("/courses/:courseId", async (req, res) => {
         );
       })
     );
-
+    await Branch.findByIdAndUpdate(course.branch, {
+      $inc: {
+        numberOfCourses: 1,
+      },
+    });
     // Delete the course
     await Course.findByIdAndDelete(req.params.courseId);
 

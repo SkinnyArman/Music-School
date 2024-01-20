@@ -83,6 +83,8 @@ router.delete("/students/:id", async (req, res) => {
       });
     }
 
+    await Student.findByIdAndDelete(studentId);
+
     // Remove the student from the Branch
     await Branch.findByIdAndUpdate(student.branch, {
       $inc: {
@@ -97,7 +99,6 @@ router.delete("/students/:id", async (req, res) => {
     );
 
     // Delete the student
-    await Student.findByIdAndDelete(studentId);
 
     res.send({ message: "Student deleted successfully." });
   } catch (error) {

@@ -12,6 +12,7 @@ async function removeAssociatedData(branchId) {
   try {
     await Student.deleteMany({ branch: branchId });
     await Teacher.deleteMany({ branch: branchId });
+    await Branch.deleteMany({ branch: branchId });
   } catch (error) {
     console.log(error);
   }

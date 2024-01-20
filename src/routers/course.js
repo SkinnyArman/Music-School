@@ -21,7 +21,7 @@ router.post("/new-course", async (req, res) => {
     // Create a new course instance
     const course = new Course({
       ...req.body,
-      students: uniqueStudentIds,
+      students: uniqueStudentIds, 
     });
 
     await Branch.findByIdAndUpdate(req.body.branch, {

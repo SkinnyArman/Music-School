@@ -1,7 +1,7 @@
 const express = require("express");
 const Student = require("../models/student");
 const Branch = require("../models/branch");
-
+const Course = require("../models/course");
 const router = new express.Router();
 
 router.get("/students", async (req, res) => {

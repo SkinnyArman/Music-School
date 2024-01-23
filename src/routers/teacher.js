@@ -14,7 +14,7 @@ router.get("/teachers", async (req, res) => {
   try {
     const teachers = await Teacher.find()
       .populate("branch", "name branchNumber")
-      .populate("Category")
+      .populate("major")
       .limit(pageSize)
       .skip(skip);
 

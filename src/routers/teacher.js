@@ -42,6 +42,7 @@ router.post("/teachers", async (req, res) => {
     const teacher = new Teacher({
       ...req.body,
       branch: branch._id,
+      imageURL: req.body.imageURL ? req.body.imageURL : ''
     });
 
     await teacher.save();

@@ -31,6 +31,9 @@ router.get("/teachers", async (req, res) => {
 });
 
 router.post("/teachers", async (req, res) => {
+  if (Object.keys(req.body) === 0) {
+    res.status(400).send({msg:'Nothing provided!'})
+  }
   const teacher = new Teacher(req.body);
   const branch = await Branch.findById(req.body.branch);
   if (!branch) {

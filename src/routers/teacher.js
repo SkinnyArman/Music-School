@@ -11,13 +11,10 @@ async function updateTeacherCount(branchNumber, increment = true) {
 }
 
 router.get("/teachers", async (req, res) => {
-  const page = parseInt(req.query.page) || 1; // Default to first page
-  const pageSize = parseInt(req.query.pageSize) || 10; // Default page size
-  const skip = (page - 1) * pageSize;
-
   try {
     const teachers = await Teacher.find()
       .populate("branch", "name branchNumber")
+      .populate("Category")
       .limit(pageSize)
       .skip(skip);
 
@@ -40,6 +37,7 @@ router.post("/teachers", async (req, res) => {
     res.status(400).send({
       message: "Branch Id does not exist!",
     });
+    return
   }
 
   try {

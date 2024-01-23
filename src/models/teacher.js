@@ -21,9 +21,8 @@ const teacherSchema = new mongoose.Schema(
       required: true,
     },
     major: {
-      type: String,
-      trim: true,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category"
     },
     numberOfActiveYears: {
       type: Number,

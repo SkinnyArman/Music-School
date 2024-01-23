@@ -14,16 +14,11 @@ router.get("/teachers", async (req, res) => {
   try {
     const teachers = await Teacher.find()
       .populate("branch", "name branchNumber")
-      .populate("major")
-      .limit(pageSize)
-      .skip(skip);
-
+      .populate("major");
     const totalTeachers = await Teacher.countDocuments(); // Total number of teachers
 
     res.send({
       teachers,
-      totalPages: Math.ceil(totalTeachers / pageSize),
-      currentPage: page,
     });
   } catch (error) {
     res.status(500).send(error);
@@ -32,7 +27,7 @@ router.get("/teachers", async (req, res) => {
 
 router.post("/teachers", async (req, res) => {
   if (Object.keys(req.body) === 0) {
-    res.status(400).send({msg:'Nothing provided!'})
+    res.status(400).send({ msg: "Nothing provided!" });
   }
   const teacher = new Teacher(req.body);
   const branch = await Branch.findById(req.body.branch);
@@ -40,7 +35,7 @@ router.post("/teachers", async (req, res) => {
     res.status(400).send({
       message: "Branch Id does not exist!",
     });
-    return
+    return;
   }
 
   try {
